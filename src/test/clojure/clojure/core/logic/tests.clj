@@ -634,6 +634,34 @@
          '((a c b d)))))
 
 ;; -----------------------------------------------------------------------------
+;; reduceg
+
+(deftest reduceg-1
+  (is (= (run 1 [q]
+              (reduceg fd/+ 0 [ 1 q 3] 6))
+         '(2))))
+
+(deftest reduceg-2
+  (is (= (run 1 [q]
+              (reduceg fd/+ 0 [1 2 3] q))
+         '(6))))
+
+(deftest reduceg-3
+  (is (= (run 1 [q]
+              (reduceg fd/+ q [1 2 3] 10))
+         [4])))
+
+(deftest reduceg-4
+  (is (= (run 1 [q]
+              (reduceg fd/+ [1 2 q] 10))
+         [7])))
+
+(deftest reduceg-4
+  (is (= (run 1 [q]
+              (reduceg fd/+ [q] 10))
+         [10])))
+
+;; -----------------------------------------------------------------------------
 ;; conde clause count
 
 (defn digit-1 [x]

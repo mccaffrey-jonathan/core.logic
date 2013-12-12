@@ -1749,6 +1749,22 @@
       (permuteo xs ys)
       (rembero x yl ys))))
 
+(defn reduceg
+  "Pseudo-relation similar to reduce for ternary relations where the third
+  parameter is the 'output', like fd/+.  v and o may be values or lvars,
+  coll may be a sequence of lvars and values or an lvar itself."
+  ([rel v coll o]
+   (matche [coll]
+           ([[]] (== v o))
+           ([[f . r]]
+            ; TODO any way to avoid temp?
+            (fresh [temp]
+                   (rel v f temp)
+                   (reduceg rel temp r o)))))
+  ([rel coll o]
+   (matche [coll]
+           ([[f . r]] (reduceg rel f r o)))))
+
 ;; =============================================================================
 ;; Rel
 

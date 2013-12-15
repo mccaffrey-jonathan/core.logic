@@ -1776,6 +1776,37 @@
    (matche [coll]
            ([[f . r]] (reduceg rel f r o)))))
 
+(defne unary-mapg
+  [rel as os]
+  ([_ [] _] s#)
+  ([_ _ []] s#)
+  ([_ [ah . at] [oh . ot]]
+   (all (rel ah oh)
+        (unary-mapg rel at ot))))
+
+(defn mapg
+  "Pseudo-relational version of map that takes a relation and multiple
+  sequences of lvars and values (or lvars themselves), and applies the relation
+  to the first element of each sequence, then the second of each, etc.
+
+  The last collection is assumed to an 'output' sequence (for relations like
+  +).  Mapg stops trying to apply the relation when once of the sequences
+  before the last and the last can be unified with '(), like the stopping
+  condition for normal map"
+  [rel & colls]
+  (conde
+    ; map stops when one of the input collections is empty
+    [(anyg emptyo (drop-last 1 colls)) (emptyo (last colls))]
+    ; Colls is a collection of lvars or collections of lvars
+    ; Not an lvar
+    [(let [firsts (repeatedly (count colls) lvar)
+           rests (repeatedly (count colls) lvar)]
+       (all
+         (unary-mapg firsto colls firsts)
+         (unary-mapg resto colls rests)
+         (apply rel firsts)
+         (apply mapg rel rests)))]))
+
 ;; =============================================================================
 ;; Rel
 

@@ -662,6 +662,57 @@
          [10])))
 
 ;; -----------------------------------------------------------------------------
+;; mapg
+
+(defn inco [a o]
+  (fd/+ 1 a o))
+
+(deftest mapg-1
+  (is (= (run 1 [q]
+              (fresh [a b c]
+                     (== q [a b c])
+                     (mapg inco [a 2 c] [9 b 6])))
+         [[8 3 5]])))
+
+(deftest mapg-2
+  (is (= (run 1 [q]
+              (fresh [a b c]
+                     (== q [a b c])
+                     (mapg inco [0 1 2] q)))
+         [[1 2 3]])))
+
+(deftest mapg-3
+  (is (= (run 1 [q]
+              (fresh [a b c]
+                     (== q [a b c])
+                     (mapg fd/+ [0 1 2] [10 9 8] q)))
+         [[10 10 10]])))
+
+(deftest mapg-4
+  (is (= (run 1 [q]
+              (fresh [a]
+                     (mapg fd/+ a [] q)))
+         [[]])))
+
+(deftest mapg-5
+  (is (= (run 1 [q]
+              (mapg fd/+ [0 1 2] [10 q 8] [10 10 10]))
+         [9])))
+
+(deftest mapg-6
+  (is (= (run 1 [q]
+              (mapg fd/+ [2] [q 5] [5]))
+         [3])))
+
+(deftest mapg-6
+  (is (empty? (run 1 [q]
+              (mapg fd/+ [2] [3] [])))))
+
+(deftest mapg-7
+  (is (empty? (run 1 [q]
+              (mapg fd/+ [] [] [10])))))
+
+;; -----------------------------------------------------------------------------
 ;; anyg
 
 (deftest anyg-1

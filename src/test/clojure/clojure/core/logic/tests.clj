@@ -662,6 +662,25 @@
          [10])))
 
 ;; -----------------------------------------------------------------------------
+;; anyg
+
+(deftest anyg-1
+  (is (= (run 1 [q]
+              (anyg emptyo [[:a] [:b] [:c] q])))
+      [[]]))
+
+(deftest anyg-2
+  (is (= (run 1 [q]
+            (fresh [xs]
+                   (== xs [[:a] [:b] [:c] q])
+                   (anyg emptyo xs)))
+       [[]])))
+
+(deftest anyg-3
+  (is (empty? (run 1 [q]
+                   (anyg emptyo [[:a] [:b] [:c] [:d]])))))
+
+;; -----------------------------------------------------------------------------
 ;; conde clause count
 
 (defn digit-1 [x]

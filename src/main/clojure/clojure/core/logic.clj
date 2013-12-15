@@ -1713,6 +1713,17 @@
 
 (declare !=)
 
+(defne anyg
+  "A pseudo-relation that takes a goal g and succeeds when g succeeds on any
+  element of coll.  Coll can be a sequence of lvars and values or an lvar
+  itself."
+  [g coll]
+  ([_ []] u#)
+  ([_ [h . t]]
+   (conde
+     [(g h) s#]
+     [(anyg g t) s#])))
+
 (defne membero
   "A relation where l is a collection, such that l contains x."
   [x l]
